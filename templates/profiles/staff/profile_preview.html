@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+ {% if user.is_authenticated %}
+   {% if not request.user.first_name %}Innovest - {{request.user.email}}
+   {% else %} Innovet - {{ request.user.first_name }} {{ request.user.second_name }}
+   {% endif %}      
+{% else %}
+    Innovet - Register
+{% endif %}
+   | Innovet Dashboard
+{% endblock title %}
+{% block style %}
+body {
+	color: black !important;
+	background: #ced1d6  !important;
+}
+.section {
+    width: 100%;
+}
+
+{% endblock style %}
+{% block stylesheet %} <link rel="stylesheet" type="text/css" href="{% static 'main/css/dashboard.css' %}">{% endblock stylesheet %}
+
+
+{% block content %}
+<div class="user_dashboard">
+    {% include 'profiles/profile.header.html' %}
+    {% include 'profiles/profile.aside.html' %}
+     <main id="main" class="main">
+        {% include 'profiles/navigation.html' with staff=True%}
+
+        <section class="section profile">
+           
+        </section>
+    </main>
+
+</div>
+{% endblock content%}

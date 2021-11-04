@@ -1,0 +1,63 @@
+<div id="custom__modals">
+      <div id="login__modal" class="login__modal">
+         <!-- Modal content -->
+         <div class="modal__content">
+            <div class="row">
+               <span id="login__close" class="modal__close">
+                  <i class="text-success bi-x-square-fill"></i>
+               </span>
+               <div class="modal__body">
+                     <form action="{% url 'user_urls:user_login' %}" method="post" role="form" class="custom-form pb-4" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="row">
+                           <div class="col-md-4 form-group">
+                             <input type="text" name="username" autofocus="" maxlength="255" class="textinput textInput form-control" required="" id="id_username" placeholder="Email">
+                           </div>
+                           <div class="col-md-4 form-group mt-3 mt-md-0">
+                              <input type="password" name="password" class="textinput textInput form-control" required="" id="id_password" placeholder="password">
+                           </div>
+                           {% comment %} <input name="next" type="hidden" value="{% url 'main-blog-detail:homepage' %}"/> {% endcomment %}
+                           <div class="col-md-4 form-group mt-3 mt-md-0">
+                              <div class="text-center"><button type="submit">Login</button></div>
+                           </div>
+                        </div> 
+                        
+                     </form>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   <div id="signup__modal" class="login__modal">
+         <!-- Modal content -->
+         <div class="modal__content">
+            <div class="row">
+               <span id="signup__close" class="modal__close">
+               <i class="text-success bi-x-square-fill"></i>
+               </span>
+               <div class="modal__body">
+                     <form enctype="multipart/form-data" action="/user/register/" method="post" role="form" class="custom-form pb-4 d-flex flex-column justify-content-center"autocomplete="off">
+                        {% csrf_token %}
+                        <div class="row">
+                           <div class="col-lg-12 mx-auto form-group">
+                             <input type="email" name="email" maxlength="255" autofocus="" placeholder="Email" class="emailinput form-control" required="" id="id_email">
+                           </div></div>
+                           <div class="row">
+                           <div class="col-lg-12  mx-auto form-group ">
+                              <input type="password" name="password1" class="form-control textinput textInput form-control" placeholder="Password" required="" id="id_password1">
+                           </div>
+                        </div> 
+                        <div class="row">
+                           <div class="col-lg-12  mx-auto form-group">
+                              <input type="password" name="password2" class="form-control textinput textInput form-control" placeholder="Confirm Password" required="" id="id_password2">
+                           </div>
+                        </div> 
+                        <div class="text-center"><button type="submit">Sign up</button></div>
+                       
+                     </form>
+               </div>
+            </div>
+         </div>
+
+      </div>
+  </div>

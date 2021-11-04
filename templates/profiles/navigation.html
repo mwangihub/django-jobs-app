@@ -1,0 +1,23 @@
+<div class="pagetitle">
+    {% if staff %}<h1>Administator account</h1>{% else %}<h1> {{request.user.get_full_name|title}} </h1>{% endif %}
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'innovesthome:innovest-home' %}">Home</a>
+            </li>
+            {% if staff %}
+                <li class="breadcrumb-item">
+                    <a class="{{profile}}" href="{% url 'user_urls:staff-profile' request.user.slug%}">Profile [Administator]</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a class="{{create}}" href="{% url 'user_urls:staff-create' %}">Create Job/Messages</a>
+                </li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'jobs:job-posts' %}">More jobs</a></li>
+                <li class="breadcrumb-item">Profile</li>
+            {% endif %}
+
+            
+        </ol>
+    </nav>
+</div>

@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+ {% if user.is_authenticated %}
+   {% if not request.user.first_name %}Innovest - {{request.user.email}}
+   {% else %} Innovet - {{ request.user.first_name }} {{ request.user.second_name }}
+   {% endif %}      
+{% else %}
+    Innovet - Register
+{% endif %}
+   | Innovet Dashboard
+{% endblock title %}
+{% block style %}
+body {
+	color: black !important;
+	background: #ced1d6  !important;
+}
+.section {
+    width: 100%;
+}
+.list-group-item {
+display: flex;
+flex-direction: column;
+justify-content: start;
+}
+.list-group-item span {
+display: flex;
+}
+{% endblock style %}
+{% block stylesheet %} <link rel="stylesheet" type="text/css" href="{% static 'main/css/dashboard.css' %}">{% endblock stylesheet %}
+
+
+{% block content %}
+<div class="user_dashboard">
+    {% include 'profiles/profile.header.html' %}
+    {% include 'profiles/profile.aside.html' %}
+     <main id="main" class="main">
+        {% include 'profiles/navigation.html' with staff=True profile='active'%}
+
+        <section class="section profile">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body pt-3">
+
+                            <ul class="nav nav-tabs nav-tabs-bordered">
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#postedjobs">Posted jobs</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#yourmessages">Messages</button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content pt-2">
+
+                                <div class="tab-pane fade show  profile-overview active show" id="profile-overview">
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="Profile" class="rounded-circle">
+                                                    <h2 class="text-capitalize">{{request.user.get_full_name}}</h2>
+                                                    <div class="social-links mt-2 "style="display: flex;width: 50%;justify-content: space-evenly;">
+                                                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                                                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                                                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                                                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                                {% if profile.resume %}
+                                                <h5 class="card-title">About</h5>
+                                                    <p class="small fst-italic">{{profile.resume}}</p>
+                                                {% else %}
+                                                    <small class="fs-6 text-warning">You have updated you resume</small>
+                                                {% endif %}
+                                                <h5 class="card-title">Profile Details</h5>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                                    <div class="col-lg-9 col-md-8">{{profile.user.get_full_name|title}}</div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Company</div>
+                                                    <div class="col-lg-9 col-md-8">Innovest Corp</div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Job</div>
+                                                    <div class="col-lg-9 col-md-8">Web applcation creator</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Country</div>
+                                                    <div class="col-lg-9 col-md-8">Kenya</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Address</div>
+                                                    <div class="col-lg-9 col-md-8">{{profile.address}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                                    <div class="col-lg-9 col-md-8">{{profile.phone}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                                    <div class="col-lg-9 col-md-8">{{profile.user.email}}</div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade profile-edit pt-3 contact"  id="profile-edit">
+                                    <form class=" custom-form">
+                                    {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="{{profile.user.get_full_name|title}}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <textarea name="about" class="form-control" id="about" style="height: 300px">{{profile.resume}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="{{profile.address}}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="{{profile.phone}}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="{{profile.user.email}}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">FaceBook</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-md-4 col-lg-3 col-form-label">Twitter</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane fade applcation pt-3"  id="postedjobs">
+                                    <div class="card">
+                                        {% if jobs %}
+                                            <div class="card-body">
+                                                <div class="text-center">
+                                                    <h5 class="card-title">Jobs you posted</h5>
+                                                    <p>Add lightweight datatables to your project with using the <a href="#">Simple DataTables</a> library. Just add class name to any table you wish to conver to a datatable</p>
+                                                </div>
+                                             
+                                                {% for job in jobs %}
+                                                    <div class="list-group mb-3">
+                                                        <div class="list-group-item list-group-item-action">
+                                                            <h6 class="mb-1">{{forloop.counter}}. {{job.job.title}}</h6>
+                                                            <span>Applied on: <p class="mb-1 ms-3">{{job.applied_on}}</p></span>
+                                                            <span>Job location: <p class="mb-1 ms-3">{{job.job.location}}</p></span>
+                                                            <span>Proposed salary: <p class="mb-1 ms-3">{{job.job.salary}}</p></span>
+                                                        </div>
+                                                    </div>
+                                                 {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade applcation pt-3"  id="yourmessages">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="message pb-2" style="display: flex;justify-content: space-evenly;align-items: center;">
+                                                <div> 
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                                    <div class="text-muted small text-nowrap mt-2">2:36 am</div>
+                                                </div>
+                                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                                                        <div class="font-weight-bold mb-1">Sharon Lessman</div> 
+                                                        Sed pulvinar, massa vitae interdum pulvinar, risus lectus porttitor magna, vitae commodo lectus mauris et velit.
+                                                Proin ultricies placerat imperdiet. Morbi varius quam ac venenatis tempus.
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+</div>
+{% endblock content%}
+
+
+
+{% block javaScript %}
+<script>
+    (function() {
+        var messages = "position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-0.366669px, 48px, 0px);"
+        var notifications ="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0.18335px, 48px, 0px);"
+        var profile = "position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-15px, 54px, 0px);"
+        fn.on("click",'.toggle-sidebar-btn', function(e){
+            fn.select('body').classList.toggle('toggle-sidebar');
+        });
+
+        fn.on("click",'[data-bs-toggle="tab"]', function(e){
+           for (let el of fn.select('[data-bs-toggle="tab"]',true)) {
+                el.classList.remove('active')
+            };
+           for (let el of fn.select('.tab-content').children) {
+                el.classList.remove('show', 'active')
+            };
+            this.classList.add('active');
+            let target =fn.select(`${this.getAttribute("data-bs-target")}`);
+            target.classList.add('show', 'active');
+        }, true);
+
+
+        fn.on("click",'[data-bs-toggle="collapse"]', function(e){
+            this.classList.toggle('collapsed');
+            let target =fn.select(`${this.getAttribute("data-bs-target")}`);
+            target.classList.toggle('show');
+        }, true);
+
+        fn.on("click",'[data-bs-toggle="dropdown"]', function(e){
+             for (let el of fn.select('[data-bs-toggle="dropdown"]',true)) {
+                el.nextElementSibling.classList.remove('show')
+                this.nextElementSibling.style=null;
+                if(el != this){
+                    el.classList.remove('show')
+                }
+            };
+            if(this.classList.contains('show')){
+                this.classList.remove('show');
+            }else{
+                this.nextElementSibling.classList.add('show');
+                this.classList.add('show');
+                if (this.nextElementSibling.classList.contains('notifications')){
+                    this.nextElementSibling.style.cssText = notifications;
+                };
+                if (this.nextElementSibling.classList.contains('profile')){
+                    this.nextElementSibling.style.cssText = profile;
+                };
+                if (this.nextElementSibling.classList.contains('messages')){
+                    this.nextElementSibling.style.cssText = messages;
+                };
+            }
+
+        }, true);
+    })();
+</script>
+{% endblock javaScript %}
+<script>
+
+</script>

@@ -1,0 +1,83 @@
+
+<section class="col-sm-12 col-md-12 col-lg-{{length}}" style="width:{{width}}; background:{{color}}; margin-bottom: 0 !important;">
+    <footer id="footer-latest">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-info">
+                            <h3>Innovest</h3>
+                            <p>
+                                Nakuru, Kenya <br>Office number<br><br>
+                                <i class="bi-whatsapp me-2 fs-6 text-success"></i> 
+                                <i class="bi-telephone-fill me-2 fs-6 text-primary"></i>
+                                <a href="tel:+254737844090" class="ms-2"> +254 737 8440 90</a><br>
+                                <i class="bi-envelope-fill me-2 fs-6 text-danger"></i> 
+                                <a href="mailto:wingdevelop@gmail.com" class="ms-2">wingdevelop@gmail.com</a>
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'jobs:job-posts' %}">Job posts</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'user_urls:about-us' %}">About us</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'user_urls:terms-conditions' %}">Terms of service (TC)</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li>Secured jobs</li>
+                            <li>Ticket assistance</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+                        {% if form_sub  %}
+                            <h4>Tell a friend</h4>
+                                <p>Leave an email address, or phone number of a person who might be interested to find jobs.</p>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    {% for field in form_sub %}
+                                        {{field}}
+                                        <small style="position: absolute;width: 100%;left: 0;bottom: -30px;font-style: oblique;color: #344767;">
+                                        ** {{field.help_text}}
+                                        </small>
+                                    {% endfor %}
+                                    <input type="submit" value="Subscribe">
+                                </form>
+                        {% else %}
+                            <h4>Tell a friend</h4>
+                            <p>Share our links and assist others to find jobs.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                <div class="copyright">&copy; Copyright 
+                    <strong><span>Innovest</span></strong>. All Rights Reserved 
+                </div>
+                <small class="text-muted"><strong>Government</strong> ISO 14001</small>
+            </div>
+           
+            <div class="credits">
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+    </footer>
+</section>

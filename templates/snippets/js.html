@@ -1,0 +1,21 @@
+{% load static %}
+
+<script src="{% static 'main/js/chart.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'main/js/main.js' %}"></script>
+<script src="{% static 'main/js/static.js' %}"></script>
+<script>
+   {% if messages %}
+      {% for msg in messages %}
+        notify.showNotification(m='{{msg}}', x='{{msg.tags}}',a='');
+      {% endfor %}
+   {% endif %}
+   const dismissFunc = (e) => {
+      var el = e.parentElement;
+      el.classList.add("fadeOutUp");
+         setTimeout(() => {
+            el.remove();
+         }, 600);   
+   };
+</script>
+    

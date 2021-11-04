@@ -1,0 +1,55 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% load crispy_forms_filters %} 
+{% load crispy_forms_field %} 
+{% load crispy_forms_utils %} 
+
+{% block title %} 
+    Innovest | Frequently asked questions
+{% endblock title %} 
+{% block style %} 
+.breadcrumbs {
+	background: none !important;
+}
+{% endblock style %} 
+
+{% block content %} 
+
+{% include 'snippets/header.html' with dashboard='True' %}
+<div class="top-cover">
+      <div class="container">
+        <h2>team</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+      </div>
+</div>
+<main id="team">
+    
+    <section class="breadcrumbs col-sm-12 col-md-11 col-lg-9">
+        <div class="container section-title">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><a href=" {% url 'jobs:job-posts' %}">Jobs & Vaccancies</a></li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="faqs" class="faqs col-sm-12 col-md-12 col-lg-12">
+        <div class="container d-flex flex-column align-items-center">
+
+            <div class="text-uppercase text-white py-3 h5"><span>Simple instructions</span></div>
+            <div class="d-flex justify-content-start flex-column fs-custom">
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   Some form,t the my have suffered alteration in some form,andomised words</span>
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   believable.available, but the majority have sufferederation in some</span>
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   There are many variations of passages of Lorem Ipsum available, but</span>
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   Some form,t the my have suffered alteration in some form,andomised words</span>
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   believable.available, but the majority have sufferederation in some</span>
+                <span><i class="bi-check-circle-fill me-3 text-success"></i>   There are many variations of passages of Lorem Ipsum available, but</span>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+{% include 'snippets/footer.html' with dashboard='True' %}
+{% endblock content%} {% block javaScript %} {% endblock javaScript %}

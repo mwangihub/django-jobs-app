@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block style %}
+@media (max-width: 576px) {
+    body {
+        height: 100%;
+
+    }
+ }
+{% endblock style %}
+
+{% block content %}
+    <main class="authentication">
+        <div class="contact col-lg-6 col-md-8 col-sm-12 p-5 rounded">
+            <div class="text-center">
+                <a href="/">
+                    <img class="mb-4" src="{% static 'main/img/innovest.png' %}" alt="logo" width="200" height="auto">
+                </a>
+                <nav class="header d-flex justify-content-center mb-4 border-bottom">
+                     
+                </nav>
+                <h1 class="h3 mb-3 fw-normal text-center">Create account as <strong class="text-capitalize">{{type}}</strong> </h1>
+            </div>
+            <form class="custom-form" role="form"  method="post" autocomplete="off">{% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+                {% if form.errors %}
+                    <div class="error-message">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                    <div class=" form-group">
+                        {{ field|as_crispy_field}}
+                    </div>
+
+                {% endfor %}               
+                <div class="text-center">
+                    <button class=" btn btn-sm btn-primary mb-2 mt-4" type="submit">Sign up</button>
+                    <div class="d-flex flex-column mb-5 pt-2 border-top">
+                        <a class="small" href="{% url 'user_urls:user_login' %}" >Forgot Password?</a>
+                        <a class="small" href="{% url 'user_urls:sign-up' %}">Create account</a>
+                    </div>
+                    
+                </div>
+            </form>
+             <nav class="footer col-sm-12 col-12">
+                <a class="footer-font">Terms and conditions applies</a>
+                <p class="footer-font">&copy; <script>document.write(new Date().getFullYear())</script></p>
+                <p class="footer-font">Powered by django</p>
+            </nav> 
+        </div>
+    </main>
+
+{% endblock %}
+kasuku67
