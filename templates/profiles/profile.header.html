@@ -63,10 +63,17 @@
                         <h6>{{request.user.get_full_name|title}}</h6>
                     </li>
                     <li>
+                        {% if request.user.is_admin %}
+                            <a class="dropdown-item d-flex align-items-center text-warning" href="{% url 'admin:index'%}">
+                                <i class="bi-tools me-2"></i>
+                                <span>Administator</span>
+                            </a>
+                        {% endif %}
                         <a class="dropdown-item d-flex align-items-center" href="{% url 'user_urls:logout' %}">
-                            <i class="bi bi-box-arrow-right"></i>
+                            <i class="bi-box-arrow-right me-2"></i>
                             <span>Sign Out </span>
                         </a>
+                        
                     </li>
                 </ul>
             </li>

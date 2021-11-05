@@ -1,113 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}
- {% if user.is_authenticated %}
-   {% if not request.user.first_name %}Innovest - {{request.user.email}}
-   {% else %} Innovet - {{ request.user.first_name }} {{ request.user.second_name }}
-   {% endif %}      
-{% else %}
-    Innovet - Register
-{% endif %}
-   | Innovet Dashboard
+   {% if not request.user.first_name %}{{request.user.email}}
+   {% else %}{{ request.user.first_name }} {{ request.user.second_name }}
+   {% endif %}     
+   | Innovet staff Dashboard
 {% endblock title %}
-{% block style %}
-    body {
-        color: black !important;
-        background: #ced1d6  !important;
-    }
-    .section {
-        width: 100%;
-    }
-    .list-group-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    }
-    .list-group-item span {
-    display: flex;
-    }
-    .addjob .custom-form select,
-    .addjob .custom-form input[type="number"] {
-        width: 200px;
-    }
-
-    .addjob .custom-form select {
-    height: 40px;
-    }
-    @media (max-width: 600px) {
-        .addjob .custom-form select,
-        .addjob .custom-form input[type="number"] {
-            width: 100%;
-        }
-    }
-{% endblock style %}
 {% block stylesheet %} <link rel="stylesheet" type="text/css" href="{% static 'main/css/dashboard.css' %}">{% endblock stylesheet %}
-
-
 {% block content %}
 <div class="user_dashboard">
     {% include 'profiles/profile.header.html' %}
     {% include 'profiles/profile.aside.html' %}
      <main id="main" class="main">
         {% include 'profiles/navigation.html' with staff=True create="active"%}
-
         <section class="section profile">
-            <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body pt-3">
-
                             <ul class="nav nav-tabs nav-tabs-bordered">
-                                <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#allapplications">Applications</button>
-                                </li>
                                 <li class="nav-item">
                                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#addjob">Add job</button>
                                 </li>
-                              
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#innovestmessages">Messages from web</button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#innovestadmins">Other admins</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#postedjobs">Posted jobs</button>
                                 </li>
                             </ul>
-
                             <div class="tab-content pt-2">
-
-                                <div class="tab-pane fade show  profile-overview " id="allapplications">
-                                     <div class="card">
-                                        {% if applications %}
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <h5 class="card-title">Applications</h5>
-                                                    <p>Add lightweight datatables to your project with using the <a href="#">Simple DataTables</a> library. Just add class name to any table you wish to conver to a datatable</p>
-                                                </div>
-                                             
-                                                {% for application in applications %}
-                                                    <div class="list-group mb-3">
-                                                        <div class="list-group-item list-group-item-action">
-                                                            <h6 class="mb-1">{{application.user.get_full_name|title}}
-                                                                <a href="tel:{{application.phone}}" class="ms-3 fs-sm">{{application.phone}}</a>
-                                                            </h6>
-                                                            <span>Job title: <p class="mb-1 ms-3">{{application.job.title}}</p></span>
-                                                            <span>Age: <p class="mb-1 ms-3">{{application.age}} years</p></span>
-                                                            <span>Date applied: <p class="mb-1 ms-3">{{application.applied_on|date:'D M Y'}}</p></span>
-                                                            {% if application.terms %}
-                                                            <span class="text-success">This applicant accepted terms and condition</p></span>
-                                                            {% else %}
-                                                            <span class="text-warning">This applicant did not accepted terms and condition</span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                 {% endfor %}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane pt-3 contact addjob active show"  id="addjob">
+                                <div class="tab-pane pt-3 contact active show"  id="addjob">
                                     <form class="custom-form" method="POST"  enctype="multipart/form-data">
                                     {% csrf_token %}
                                         {{j_form.media}}
@@ -120,115 +39,42 @@
                                         {% endfor %}
                                         
                                         <div class="text-center col-12">
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            <button type="submit" class="btn btn-primary">Create Job</button>
                                         </div>
                                     </form>
                                 </div>
 
-                                <div class="tab-pane fade innovestmessages pt-3"  id="innovestmessages">
+                                <div class="tab-pane pt-3 applcation"  id="postedjobs">
                                     <div class="card">
                                         <div class="card-body">
-                                            {% if message %}
-                                                {% for msg in message %}
-                                                    <div class="message my-3 shadow p-3">
-                                                        <div class="user-msg"> 
-                                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="thumb" width="40" height="40">
-                                                            <div class="text-muted text-nowrap">{{msg.names|title}}</div>
-                                                            <div class="text-muted text-nowrap">{{msg.email}}</div>
-                                                            <div class="text-muted text-nowrap">{{msg.created_at|date:"D M Y"}}</div>
-                                                        </div>
-                                                            <div class="msg flex-shrink-1">
-                                                                <div class="text-dark">{{msg.inform_us|safe}}</div>
+                                            {% if job_list %}
+                                                <div class="text-center">
+                                                    <h5 class="card-title">Jobs posted</h5>
+                                                    <p>Add lightweight datatables to your project with using the <a href="#">Simple DataTables</a> library. Just add class name to any table you wish to conver to a datatable</p>
+                                                </div>
+                                                {% for job in job_list %}
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="h-100  bg-light rounded-3 p-3">
+                                                            <h4 class="text-dark">{{job.title}}</h4>
+                                                            {{job.description|safe}}
+                                                            <a href="{% url 'user_urls:job-prev' job.slug %}" class="btn btn-outline-dark btn-sm" type="button">View this job</a>
                                                         </div>
                                                     </div>
                                                 {% endfor %}
+                                            {% else %}
+                                                <div class="text-center">
+                                                    <h2 class="card-title">There are no jobs posted</h2>
+                                                    <p>Add lightweight datatables to your project with using the <a href="#">Simple DataTables</a> library. Just add class name to any table you wish to conver to a datatable</p>
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="tab-pane fade applcation pt-3"  id="innovestadmins">
-                                    <div class="card">
-                                        <div class="card-body">
-                                           <a  href="{% url 'user_urls:s-profile-prev' %}">This admin</a>
-
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
-
-            </div>
         </section>
     </main>
-
 </div>
 {% endblock content%}
-
-
-
-{% block javaScript %}
-<script>
-    (function() {
-        var messages = "position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-0.366669px, 48px, 0px);"
-        var notifications ="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0.18335px, 48px, 0px);"
-        var profile = "position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-15px, 54px, 0px);"
-        fn.on("click",'.toggle-sidebar-btn', function(e){
-            fn.select('body').classList.toggle('toggle-sidebar');
-        });
-
-        fn.on("click",'[data-bs-toggle="tab"]', function(e){
-           for (let el of fn.select('[data-bs-toggle="tab"]',true)) {
-                el.classList.remove('active')
-            };
-           for (let el of fn.select('.tab-content').children) {
-                el.classList.remove('show', 'active')
-            };
-            this.classList.add('active');
-            let target =fn.select(`${this.getAttribute("data-bs-target")}`);
-            target.classList.add('show', 'active');
-        }, true);
-
-
-        fn.on("click",'[data-bs-toggle="collapse"]', function(e){
-            this.classList.toggle('collapsed');
-            let target =fn.select(`${this.getAttribute("data-bs-target")}`);
-            target.classList.toggle('show');
-        }, true);
-
-        fn.on("click",'[data-bs-toggle="dropdown"]', function(e){
-             for (let el of fn.select('[data-bs-toggle="dropdown"]',true)) {
-                el.nextElementSibling.classList.remove('show')
-                this.nextElementSibling.style=null;
-                if(el != this){
-                    el.classList.remove('show')
-                }
-            };
-            if(this.classList.contains('show')){
-                this.classList.remove('show');
-            }else{
-                this.nextElementSibling.classList.add('show');
-                this.classList.add('show');
-                if (this.nextElementSibling.classList.contains('notifications')){
-                    this.nextElementSibling.style.cssText = notifications;
-                };
-                if (this.nextElementSibling.classList.contains('profile')){
-                    this.nextElementSibling.style.cssText = profile;
-                };
-                if (this.nextElementSibling.classList.contains('messages')){
-                    this.nextElementSibling.style.cssText = messages;
-                };
-            }
-
-        }, true);
-    })();
-</script>
-{% endblock javaScript %}
-<script>
-
-</script>

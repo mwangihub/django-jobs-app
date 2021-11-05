@@ -65,6 +65,9 @@ class UserManager(BaseUserManager):
     def staff_user(self):
         return self.get_queryset().filter(staff=True)
 
+    def employee_user(self):
+        return self.get_queryset().filter(employee=True)
+
 
 class User(AbstractBaseUser):
     email = models.EmailField(
@@ -171,6 +174,7 @@ class EmployeeProfile(models.Model):
     user = models.OneToOneField(
         User, related_name="employee_profile", on_delete=models.CASCADE
     )
+    
     avatar = models.ImageField(
         upload_to="media/profiles/employees/avatars/", null=True, blank=True
     )
@@ -208,6 +212,18 @@ class StaffProfile(models.Model):
     GENDER = GenderChoice.choices
     user = models.OneToOneField(
         User, related_name="staff_profile", on_delete=models.CASCADE
+    )
+    first_name = models.CharField(
+        max_length=100,
+        verbose_name="First name",
+        blank=True,
+        null=True,
+    )
+    second_name = models.CharField(
+        max_length=100,
+        verbose_name="Second name",
+        blank=True,
+        null=True,
     )
     avatar = models.ImageField(
         upload_to="media/profiles/staff/avatars/", null=True, blank=True

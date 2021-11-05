@@ -15,7 +15,7 @@
                         <a href="{% url 'jobs:job-detail' job.slug %}">
                             <div class="icon_wrapper">
                                 <div class="icon">
-                                    <img src=" {% static 'main/img/clients/client-5.png' %}" class="img-fluid" alt="">
+                                    <img src="{{job.company_avatar.url}}" class="img-fluid" alt="">
                                 </div>
                             </div>
                             <button disabled="" class="btn btn-sm btn-info">

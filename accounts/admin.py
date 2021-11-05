@@ -102,7 +102,6 @@ class AdminEmployeeProfile(admin.ModelAdmin):
         "avatar",
         "gender",
         "phone",
-        "resume",
         "created_at",
     )
 
@@ -110,10 +109,11 @@ class AdminEmployeeProfile(admin.ModelAdmin):
 class AdminStaffProfile(admin.ModelAdmin):
     list_display = (
         "user",
+        "first_name",
+        "second_name",
         "avatar",
         "gender",
         "phone",
-        "resume",
         "created_at",
     )
 

@@ -2,8 +2,10 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import fields
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.views import generic
 from django.views import View
 from . import forms
@@ -16,7 +18,33 @@ User = get_user_model()
 
 
 @method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
-class StaffAdminProfilePreView(View):
+class JobUpdateView(generic.UpdateView):
+    model = j_db.Job
+    template_name = "profiles/staff/job_update.html"
+    fields = [
+        "title",
+        "salary",
+        "company_avatar",
+        "location",
+        "gender",
+        "required_age",
+        "positions",
+        "experience",
+        "description",
+        "requirements", ]
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('user_urls:job-prev', kwargs={'slug': self.object.slug})
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class JobPreView(generic.DetailView):
+    model = j_db.Job
+    template_name = "profiles/staff/job_preview.html"
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class AdminProfilePreView(View):
     template_name = "profiles/staff/profile_preview.html"
     form_class = None
 
@@ -28,7 +56,53 @@ class StaffAdminProfilePreView(View):
 
 
 @method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
-class StaffCreateView(generic.CreateView):
+class ApplicationsView(View):
+    template_name = "profiles/staff/list_applications.html"
+    form_class = None
+
+    def get(self, request, *args, **kwargs):
+        context = {
+                'applications': j_db.JobsApplication.objects.all(),
+        }
+        return render(request, self.template_name, context)
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class ApplicantUsersView(View):
+    template_name = "profiles/staff/list_applicant_users.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {
+                'applicants': _db.User.objects.employee_user(),
+        }
+        return render(request, self.template_name, context)
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class StaffUsersView(View):
+    template_name = "profiles/staff/list_staff_users.html"
+
+    def get(self, request, *args, **kwargs):
+        staff = _db.User.objects.staff_user().exclude(id=request.user.id)
+        context = {
+                'staffs': staff,
+        }
+        return render(request, self.template_name, context)
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class InnovestMessagesView(View):
+    template_name = "profiles/staff/list_web_messages.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'mess': _db.InnovestUsersMessages.objects.all(),
+        }
+        return render(request, self.template_name, context)
+
+
+@method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
+class CreateJobsView(generic.CreateView):
     model = j_db.Job
     template_name = "profiles/staff/create.html"
     form_class = forms.JobCreationForm
@@ -36,16 +110,15 @@ class StaffCreateView(generic.CreateView):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'applications': j_db.JobsApplication.objects.all(),
             'j_form': self.form_class,
-            'message': _db.InnovestUsersMessages.objects.all()
+            'job_list': j_db.Job.objects.all()
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('segment'):
             form = self.form_class(request.POST or None, request.FILES or None)
-            
+
             if form.is_valid():
                 user = request.user
                 title = form.cleaned_data.get('title')
@@ -59,19 +132,19 @@ class StaffCreateView(generic.CreateView):
                 positions = form.cleaned_data.get('positions')
                 domain = get_current_site(request).domain
                 j_db.Job.objects.create(
-                        user=user,
-                        title=title,
-                        salary=salary,
-                        location=location,
-                        gender=gender,
-                        required_age=required_age,
-                        experience=experience,
-                        description=description,
-                        requirements=requirements,
-                        positions=positions,
-                        domain=domain
-                    )
-                
+                    user=user,
+                    title=title,
+                    salary=salary,
+                    location=location,
+                    gender=gender,
+                    required_age=required_age,
+                    experience=experience,
+                    description=description,
+                    requirements=requirements,
+                    positions=positions,
+                    domain=domain
+                )
+
                 messages.success(
                     request, f"Job created succesfully. we will be creating a preview mode of the job soon."
                 )
@@ -84,18 +157,20 @@ class StaffCreateView(generic.CreateView):
 
 
 @method_decorator([login_required(login_url='user_urls:user_login'), staff_required], name='dispatch')
-class StaffProfileView(View):
+class ProfileView(View):
     template_name = "profiles/staff/staff_view.html"
-    form_class = None
+    form_class = forms.StaffProfileForm
+    profile = None
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.slug == kwargs['slug']:
             self.profile = get_object_or_404(
                 _db.StaffProfile, user=request.user)
-            return super(StaffProfileView, self).dispatch(request, *args, **kwargs)
+            return super(ProfileView, self).dispatch(request, *args, **kwargs)
         else:
             try:
-                user = get_object_or_404(User, username=request.user.email)
+                user = get_object_or_404(
+                    User, slug=request.user.kwargs['slug'])
                 logout(request)
                 return redirect('user_urls:user_login')
             except User.DoesNotExist:
@@ -104,32 +179,32 @@ class StaffProfileView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'profile': self.profile,
-            'fom': self.form_class
+            'p_form': self.form_class(instance=self.profile),
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(
-            request.POST, request.FILES, instance=self.profile)
+        form = self.form_class(request.POST or None,
+                               request.FILES or None, instance=self.profile)
+        print(request.POST)
         if form.is_valid():
+            form.save()
             profile = form.save()
             profile.user.first_name = form.cleaned_data.get('first_name')
             profile.user.second_name = form.cleaned_data.get('second_name')
             profile.user.username = form.cleaned_data.get('username')
             profile.user.save()
             messages.success(request, 'Profile saved successfully')
+            return redirect("user_urls:staff-profile", slug=kwargs['slug'])
         else:
             context = {
                 'profile': self.profile,
                 'segment': 'profile',
                 'removeFooter': True,
                 'form': form,
-
             }
-            print(form.errors)
             messages.error(request, "There was an Error")
-            return render(request, 'users/profile_edit.html', context)
-        return redirect("user_urls:edit_profile", username=kwargs['username'])
+            return render(request, self.template_name, context)
 
 
 # GENERAL VIEWS

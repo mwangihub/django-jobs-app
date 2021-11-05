@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+   {% if not request.user.first_name %}{{request.user.email}}
+   {% else %}{{ request.user.first_name }} {{ request.user.second_name }}
+   {% endif %}     
+   | Innovet staff Dashboard
+{% endblock title %}
+{% block stylesheet %} <link rel="stylesheet" type="text/css" href="{% static 'main/css/dashboard.css' %}">{% endblock stylesheet %}
+{% block content %}
+<div class="user_dashboard">
+    {% include 'profiles/profile.header.html' %}
+    {% include 'profiles/profile.aside.html' %}
+     <main id="main" class="main">
+        {% include 'profiles/navigation.html' with staff=True %}
+        <div class="container">
+            <div class="col-md-12 job_preview">
+                <div id="addjob" class="basics contact">
+                    <form class="custom-form" method="POST"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.media}}
+                        {% for field in form %}
+                            <div class="d-flex flex-column mb-3 col-12">
+                                <label class="">{{field.label}}</label>
+                                {{field}}
+                                <small class="text-primary">{{field.help_text}}</small>
+                                {% if field.error %}<small class="text-primary">{{field.error}}</small>{% endif %}
+                            </div>
+                        {% endfor %}
+                            <div class="text-center col-12">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                    </form>
+                    <a href="{% url 'user_urls:job-prev' object.slug%}" class="btn btn-outline-dark btn-sm px-5" type="button">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock content%}

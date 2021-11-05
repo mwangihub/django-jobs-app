@@ -10,13 +10,24 @@ from accounts import models as acc_db
 def user_pre_save_receiver(sender,  instance, created, **kwargs):
     value = f"{instance.first_name}-{instance.id}-{instance.second_name}"
     instance.slug = slugify(value, allow_unicode=False)
-   
+
 
 @receiver(post_save, sender=acc_db.User, dispatch_uid='user_signal_sender')
 def user_post_save_receiver(sender,  instance, created, **kwargs):
     if created:
         if instance.is_employee:
-            acc_db.EmployeeProfile.objects.create(user=instance)
-            
+            profile = acc_db.EmployeeProfile.objects.create(user=instance)
+            profile.save()
+
         if instance.is_staff:
-            acc_db.StaffProfile.objects.create(user=instance)
+            profile = acc_db.StaffProfile.objects.create(user=instance)
+            profile.first_name = instance.first_name
+            profile.second_name = instance.second_name
+            profile.save()
+            
+    if not created:
+        if instance.is_staff:
+            user = instance
+            user.staff_profile.first_name = instance.first_name
+            user.staff_profile.second_name = instance.second_name
+            user.staff_profile.save()

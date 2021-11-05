@@ -53,7 +53,7 @@
                 <div class="col-sm-12 col-lg-8">
                     <div class="job_detail_heading d-flex">
                         <div class="company_thumb"> 
-                            <img class="img-fluid" src=" {% static 'main/img/clients/client-2.png ' %}" alt="company_thumb">
+                            <img class="img-fluid" src="{{job.company_avatar.url}}" alt="company_thumb">
                             <small class="grad-bg-faded-danger text-white rounded text-center">Jobs comming soon</small> 
                         </div>
                         <div class="job_description">
@@ -62,7 +62,7 @@
                                 <li><small  class="grad-bg-info text-white px-3 pt-2 pb-1 rounded">Full time</small></li>
                             </ul>
                             <ul class="job_meta">
-                                <li><i class="bi-file-text-fill text-success me-2"></i> Applications 1</li>
+                                <li><i class="bi-file-text-fill text-success me-2"></i> Applications {{object.no_applications}}</li>
                                 <li><i class="bi-calendar2-week-fill text-success me-2"></i> Post Date: {{object.posted_on|date:"D d M Y"}}</li>
                             </ul>
                         </div>

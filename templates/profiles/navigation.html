@@ -7,17 +7,27 @@
             </li>
             {% if staff %}
                 <li class="breadcrumb-item">
-                    <a class="{{profile}}" href="{% url 'user_urls:staff-profile' request.user.slug%}">Profile [Administator]</a>
+                    <a class="{{profile}}" href="{% url 'user_urls:staff-profile' request.user.slug%}">Profile</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a class="{{create}}" href="{% url 'user_urls:staff-create' %}">Create Job/Messages</a>
+                    <a class="{{create}}" href="{% url 'user_urls:staff-create' %}">Create Job</a>
                 </li>
-            {% else %}
-                <li class="breadcrumb-item"><a href="{% url 'jobs:job-posts' %}">More jobs</a></li>
-                <li class="breadcrumb-item">Profile</li>
             {% endif %}
 
-            
+            {% if employee %}
+                <li class="breadcrumb-item"><a href="{% url 'jobs:job-posts' %}">More jobs</a></li>
+                {% if apps %}
+                    <li class="breadcrumb-item"><a href="{% url 'user_urls:employee-profile' user.slug %}">Profile</a></li>
+                    <li class="breadcrumb-item">My applications</li>
+                {% endif %}
+
+                {% if profile %} 
+                <li class="breadcrumb-item">Profile</li>
+                <li class="breadcrumb-item"><a href="{% url 'user_urls:my-app' %}">Your applications</a></li>
+                   
+                {% endif %}
+                
+            {% endif %}
         </ol>
     </nav>
 </div>

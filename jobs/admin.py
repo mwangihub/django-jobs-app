@@ -12,6 +12,7 @@ class AdminJobs(admin.ModelAdmin):
         "positions",
         "taken",
         "posted_on",
+        'company_avatar',
     )
 
 

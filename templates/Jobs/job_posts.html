@@ -58,7 +58,7 @@
                     <aside>
                         <ul class="side-menu">
                             {% if request.user.is_authenticated and request.user.is_employee %}
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                     <a class="main-link">
                                         <div>
                                             <i class="bx bxs-dashboard"></i>
@@ -69,9 +69,9 @@
                                     <ul class="sub-menu">
                                         {% for job in applied %} 
                                         <li>
-                                            <a href="{% url 'jobs:job-detail' job.job.id %}">
+                                            <a href="{% url 'jobs:job-detail' job.job.slug %}">
                                                 {{job.job.title|title}} 
-                                                <small>{{job.applied_on|date:"D d M Y"}}</small> 
+                                                <small class="text-primary">{{job.applied_on|date:"D d M Y"}}</small> 
                                             </a> 
                                         </li>
                                         {% endfor %}
@@ -79,7 +79,7 @@
                                 </li>
                             {% endif %}
 
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                     <a class="main-link">
                                         <div>
                                             <i class="bi-question-octagon-fill"></i>
@@ -89,12 +89,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <span class="text-dark mb-2 border-bottom">Can i apply for specific jobs?</span>
+                                            <span class="text-white-50 mb-2 border-bottom">Can i apply for specific jobs?</span>
                                             <p>Yes, you can apply for specific jobs as much as you have qualifications.</p>
                                         </li>
 
                                         <li>
-                                            <span class="text-dark mb-2 border-bottom">How safe are abroad jobs?</span>
+                                            <span class="text-white-50 mb-2 border-bottom">How safe are abroad jobs?</span>
                                             <p>That is the most confusing question but we will clarify something.</p>
                                             <p>Most people do not understand that they are supposed to find outside country
                                             jobs through a lincesed organaisation. if someone tells you there is a job and he/she is not a lincesed by the government, do not take that bait.</p>

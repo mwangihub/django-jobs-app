@@ -42,7 +42,7 @@ def send_mail_method(user=None, domain=None, subject=None, email=None):
         'uid': encode(force_bytes(user.pk)),
         'token': _token_generator.make_token(user),
     })
-    send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [email,])
 
 
 class UserLoginView(LoginView):
@@ -117,13 +117,13 @@ class EmployeeSignUpView(CreateView):
             user = form.save(commit=False)
             user.active = False
             user.staff = False
-            user.save()
             domain = get_current_site(request).domain
             subject = 'Activate Your Account'
             to_email = form.cleaned_data.get('email')
             send_mail_method(user=user, domain=domain,
                              subject=subject, email=to_email)
-
+           
+            user.save()
             messages.success(
                 request, f'A confirmation link has been sent to {to_email}. Check your email to complete registration.')
             return redirect('user_urls:register-employee')

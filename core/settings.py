@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = str(os.environ.get('DEBUG')) == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 if DEBUG:
     ALLOWED_HOSTS += [os.environ.get('DJANGO_ALLOWED_HOST')]
 
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     "accounts",
     "jobs",
 ]
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 AUTH_USER_MODEL = "accounts.User"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -146,6 +146,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
 EMAIL_HOST_USER = "wingdevelop@gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

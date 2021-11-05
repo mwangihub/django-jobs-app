@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+   {% if not request.user.first_name %}{{request.user.email}}
+   {% else %}{{ request.user.first_name }} {{ request.user.second_name }}
+   {% endif %}     
+   | Innovet staff Dashboard
+{% endblock title %}
+{% block stylesheet %} <link rel="stylesheet" type="text/css" href="{% static 'main/css/dashboard.css' %}">{% endblock stylesheet %}
+{% block content %}
+<div class="user_dashboard">
+    {% include 'profiles/profile.header.html' %}
+    {% include 'profiles/profile.aside.html' %}
+     <main id="main" class="main">
+        {% include 'profiles/navigation.html' with staff=True%}
+
+        <div class="container ">
+            <div class="col-md-12 job_preview">
+                <div class="basics">
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3">
+                            <img src="/media/jobs_avatars/c1d89862-333f-474c-824b-c53d84017f55/client-3.png" alt="" class="img-style">
+                        </div>
+                        <div class="col-md-9 col-sm-9">
+                            <div>
+                                <h2>{{object.title}}<span>{{object.posted_on}} <small class="ms-5">No. applications {{object.no_applications}}</small></span></h2>
+                                <p>Now Hiring ({{object.positions}})</p>
+                                <ul class="details">
+                                    <li><span>Location:</span>{{object.location}}</li>
+                                    <li><span>Salary:</span>{{object.salary}}</li>
+                                    <li><span>Hiring contact:</span>info@hire.com</li>
+                                    <li class="text-danger"><span >Posted by:</span>{{object.user.get_full_name}}</li>
+                                </ul>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="heading information">
+                        <div class="info-heading">
+                            <i class="fa fa-user fa-fw"></i> About the job
+                        </div>
+                        <div class="info-body">
+                            {{object.description|safe}}
+                        </div>
+                    </div>
+
+                    <div class="heading information">
+                        <div class="info-heading">
+                            <i class="bi-pencil me-3"></i> Experience:
+                        </div>
+                        <div class="info-body">
+                            {{object.experience|safe}}
+                        </div>
+                    </div>
+
+                    <div class="heading information">
+                        <div class="info-heading">
+                            <i class="bi-cup me-3"></i> Minimum qualifications:
+                        </div>
+                        <div class="info-body">
+                            {{object.requirements|safe}}
+                        </div>
+                    </div>
+
+                    {% if request.user == object.user %}
+                        <a href="{% url 'user_urls:job-update' object.slug%}" class="btn btn-outline-dark btn-sm px-4" type="button">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock content%}
