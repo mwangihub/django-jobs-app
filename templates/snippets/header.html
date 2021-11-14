@@ -18,6 +18,9 @@
 
                     <ul>
                         {% if not home %}<li><a class="main_links" href="/">Home</a></li>{% endif %}
+                        <form id="change-themee"class="d-flex form-check form-switch">
+                            <input type="checkbox" name="terms" class=" form-check-input ms-0" required="" id="id_terms">
+                        </form>
                         <li  class="main_links btn btn-success btn-sm my-1 text-white"><a href="{% url 'user_urls:sign-up' %}">Sign up</a></li>
                         <div class="user__actions">
                             {% if request.user.is_authenticated%}

@@ -18,7 +18,8 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "email",
         "first_name",
-        "colored_first_name",
+        'id',
+        #"colored_first_name",
         "second_name",
         "admin",
         "active",
@@ -30,48 +31,15 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ("admin", "active", "staff")
     fieldsets = (
         ("Basic", {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("first_name", "second_name")}),
-        (
-            "Permissions",
-            {
-                "fields": (
-                    "admin",
-                    "active",
-                    "staff",
-                )
-            },
-        ),
-        (
-            "Others",
-            {
-                "fields": (
-                    "buyer",
-                    "employee",
-                )
-            },
-        ),
+        ("Personal info", {"fields": ("first_name", "second_name", "slug")}),
+        ("Permissions",{"fields": ("admin","active","staff", )},),
+        ("Others",{"fields": ("buyer","employee",)},),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
-        (
-            None,
-            {
-                "classes": ("wide",),
-                "fields": (
-                    "email",
-                    "password1",
-                    "password2",
-                    "first_name",
-                    "second_name",
-                    "active",
-                    "staff",
-                    "admin",
-                    "buyer",
-                    "employee",
-                ),
-            },
-        ),
+        (None, {"classes": ("wide",),"fields": ("email","password1","password2","first_name",\
+                    "second_name", "active","staff","admin","buyer","employee",),}, ),
     )
     ordering = ("email",)
     filter_horizontal = ()
@@ -92,8 +60,8 @@ class AdminInnovestSubscribers(admin.ModelAdmin):
     list_display = ("email", "created_at", "subscribe")
 
 
-# class AdminAboutWeb(admin.ModelAdmin):
-#     list_display = ('user','about','current','id')
+class AdminThemes(admin.ModelAdmin):
+    list_display = ("session", "light", "accent",)
 
 
 class AdminEmployeeProfile(admin.ModelAdmin):
@@ -127,3 +95,4 @@ admin.site.register(acc_db.InnovestUsersMessages, AdminInnovestMessages)
 admin.site.register(acc_db.InnovestSubcribers, AdminInnovestSubscribers)
 admin.site.register(acc_db.EmployeeProfile, AdminEmployeeProfile)
 admin.site.register(acc_db.StaffProfile, AdminStaffProfile)
+admin.site.register(acc_db.Theme, AdminThemes)

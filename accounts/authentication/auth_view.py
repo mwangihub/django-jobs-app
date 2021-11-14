@@ -3,7 +3,6 @@ Seperation of concerns. since we want the accounts app to handle CRUD for users
 '''
 
 import six
-from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
@@ -27,11 +26,10 @@ class TokenGenerator(PasswordResetTokenGenerator):
     '''
     overriding  _make_hash_value
     '''
-
     def _make_hash_value(self, user, timestamp):
         return six.text_type(user.pk) + six.text_type(timestamp) + six.text_type(user.is_active)
 
-        #   return str(user.pk) + str(timestamp) + six.text_type(user.is_active)
+        
 _token_generator = TokenGenerator()
 
 

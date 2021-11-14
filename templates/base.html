@@ -20,7 +20,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'main/css/dark.css' %}">
+    {% if dark_theme %}
+        <link rel="stylesheet" type="text/css" href="{% static 'main/css/light.css' %}">
+    {% endif %}
+
+   
+        <link rel="stylesheet" type="text/css" href="{% static 'main/css/light.css' %}">
+
+
     {% block stylesheet %}{% endblock stylesheet %}
     <style>{% block style %}{% endblock style %}</style> 
 </head>
@@ -57,7 +64,6 @@
 <script>
 if(fn.select('#local-products')){
     sync.productListApi(fn.select('#local-products').getAttribute('data-keurl'))
-
 }
 
 </script>

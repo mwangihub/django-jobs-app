@@ -1,9 +1,11 @@
 
 
 from django.urls import path
+from . import staff_views
+from . import employee_views
 from .authentication.urls import urlpatterns as auth_urls
-from accounts import staff_views
-from accounts import employee_views
+
+
 
 app_name = "user_urls"
 
@@ -22,8 +24,6 @@ urlpatterns = [
     path("employee/update-application/<int:pk>/",
          employee_views.EmployeeApplicationUpdateView.as_view(), name="ed-application"),
     path("employee/my-application/all/",employee_views.EmployeeMyApplicationsView.as_view(), name="my-app"),
-
-
 
     # STAFF URLS
     path("profile/staff/<str:slug>/",

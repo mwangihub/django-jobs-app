@@ -19,12 +19,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "crispy_forms",
     "corsheaders",
     "six",
     "channels",
     "ckeditor",
     "django_countries",
+
     "accounts",
     "jobs",
 ]
@@ -59,7 +61,14 @@ TEMPLATES = [
         },
     },
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
 ASGI_APPLICATION = "core.routing.application"
 if not DEBUG:
     CHANNEL_LAYERS = {"default": {

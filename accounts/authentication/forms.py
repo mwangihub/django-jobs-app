@@ -33,6 +33,7 @@ class EmployeeSignUpForm(UserCreationForm):
             user.save()
         return user
 
+
 class CustomerSignUpForm(UserCreationForm):
     class Meta:
         model = User
@@ -112,6 +113,7 @@ class SetPasswordForm(forms.Form):
                     code='password_mismatch',
                 )
         return password2
+
 
 #  COPIED METHOD FOR ERRORS:
 def form_validation_error(form):

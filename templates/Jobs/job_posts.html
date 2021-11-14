@@ -78,7 +78,6 @@
                                     </ul>
                                 </li>
                             {% endif %}
-
                             <li class="nav-item">
                                     <a class="main-link">
                                         <div>
@@ -89,12 +88,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <span class="text-white-50 mb-2 border-bottom">Can i apply for specific jobs?</span>
+                                            <span class=" mb-2 border-bottom">Can i apply for specific jobs?</span>
                                             <p>Yes, you can apply for specific jobs as much as you have qualifications.</p>
                                         </li>
 
                                         <li>
-                                            <span class="text-white-50 mb-2 border-bottom">How safe are abroad jobs?</span>
+                                            <span class=" mb-2 border-bottom">How safe are abroad jobs?</span>
                                             <p>That is the most confusing question but we will clarify something.</p>
                                             <p>Most people do not understand that they are supposed to find outside country
                                             jobs through a lincesed organaisation. if someone tells you there is a job and he/she is not a lincesed by the government, do not take that bait.</p>
@@ -110,7 +109,6 @@
                         </ul>
                     </aside>
                 </div>
-                
             </div>
             <div class="col-lg-9 col-md-12">
                 {% for job in notapplied %} 
@@ -121,10 +119,10 @@
                             </a>
                             <div class="job-content">
                                 <div class="short__description">
-                                    <h6><a href="{% url 'jobs:job-detail' job.slug %}">{{job.title|title}}</a></h6>
+                                    <h5><a href="{% url 'jobs:job-detail' job.slug %}">{{job.title|title}}</a></h5>
                                     <p class="salary">{{job.salary}}</p>
                                 </div>
-                                <p>{{job.description|safe}}</p>
+                                <p>{{job.description|safe|truncatewords:'60'}}</p>
                                 <div class="creator d-flex justify-content-end align-items-center">
                                     <div class="creator-thumb d-flex align-items-center">
                                         <img src="{% static 'main/img/features.jpg' %}" class="img-fluid" alt="">

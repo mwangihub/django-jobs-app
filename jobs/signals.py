@@ -1,45 +1,9 @@
-from django.conf import settings
-# from django.core.mail import send_mass_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-
-
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from . import models as _db
 from accounts import models as acc_db
-
-
-def get_rendered_html(template_name, context={}):
-    html_content = render_to_string(template_name, context)
-    return html_content
-
-
-def send_email(subject, html_content, text_content=None, from_email=None, recipients=[], attachments=[], bcc=[], cc=[]):
-    # send email to user with attachment
-    if not from_email:
-        from_email = settings.DEFAULT_FROM_EMAIL
-    if not text_content:
-        text_content = ''
-    email = EmailMultiAlternatives(
-        subject, text_content, from_email, recipients, bcc=bcc, cc=cc
-    )
-    email.attach_alternative(html_content, "text/html")
-    for attachment in attachments:
-        # Example: email.attach('design.png', img_data, 'image/png')
-        email.attach(*attachment)
-    email.send()
-
-
-def send_mass_mail(data_list):
-    for data in data_list:
-        template = data.pop('template')
-        context = data.pop('context')
-        html_content = get_rendered_html(template, context)
-        data.update({'html_content': html_content})
-        send_email(**data)
+from core.methods import send_mass_mail
 
 
 @receiver(post_save, sender=_db.Job, dispatch_uid='job_signal_sender')

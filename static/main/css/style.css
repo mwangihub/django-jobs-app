@@ -1,3 +1,33 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Bold-webfont.woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular-webfont.woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Light-webfont.woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    line-height: 1.9;
+}
+
+
 /* -------------------------------------------------------
 # Top cover
 -------------------------------------------------------- */
@@ -1137,9 +1167,9 @@
 }
 
 .side-nav aside li.active .main-link {
-    background: #4169e1b7;
+    background: #157b07b8;
     color: white;
-    padding: 10px;
+    padding: 3px 10px;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
@@ -1175,11 +1205,6 @@
     z-index: 600;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 20px 0;
-}
-
-#header.header-scrolled,
-#header.header-inner-pages {
-    background: #344767 !important;
 }
 
 .custom__header .logo {

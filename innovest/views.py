@@ -9,18 +9,18 @@ from jobs import models as jobs_db
 from . import forms
 
 
+
 class InnovestHomeView(generic.View):
     def get(self, request, *args, **kwargs):
-        request.session.session_key
         context = {
             "form_msg": forms.InnovestMessagesForm(
                 initial={"session_user": request.user.email
-                    if request.user.is_authenticated else "Annonymous User",
-                    "message": "Innovest subscriber",
-                }
+                         if request.user.is_authenticated else "Annonymous User",
+                         "message": "Innovest subscriber",
+                         }
             ),
             "form_sub": forms.InnovestSubscribeForm(
-                initial={"subscribe": "Innovest subscriber",}
+                initial={"subscribe": "Innovest subscriber", }
             ),
             "jobs": jobs_db.Job.objects.not_taken()[:4]
         }
@@ -36,7 +36,7 @@ class InnovestHomeView(generic.View):
                 from_name = {form_msg.cleaned_data.get("names")}
                 message += f"\nFrom: Email:{from_email}\nname:{from_name}"
                 to_email = [
-                    "pmwangij9@gmail.com","njeriephie@gmail.com"
+                    "pmwangij9@gmail.com", "njeriephie@gmail.com"
                 ]
                 send_mail(subject, message, settings.EMAIL_HOST_USER, to_email)
                 messages.success(
@@ -58,7 +58,7 @@ class InnovestHomeView(generic.View):
                 message = f"{from_email} has subscribe in the website to be \
                     informed about new jobs.\n"
                 to_email = [
-                    "pmwangij9@gmail.com","njeriephie@gmail.com"
+                    "pmwangij9@gmail.com", "njeriephie@gmail.com"
                 ]
                 send_mail(subject, message, settings.EMAIL_HOST_USER, to_email)
                 messages.success(
@@ -76,5 +76,5 @@ class InnovestHomeView(generic.View):
 
 
 class ContactRedirectView(generic.RedirectView):
-    def get_redirect_url(*args, **kwargs): 
+    def get_redirect_url(*args, **kwargs):
         return reverse("innovesthome:innovest-home") + f"#{'contact'}"

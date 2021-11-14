@@ -42,24 +42,23 @@
                 <li><a href="/">Home</a></li>
                 <li><a href=" {% url 'jobs:job-posts' %}">Jobs & Vaccancies</a></li>
             </ol>
-            <h3 class="text-uppercase text-center text-white py-3 h5">{{object.title}}</h3>
+            <h3 class="text-uppercase text-center py-1 h5">{{object.title}}</h3>
         </div>
     </section>
 
     <section class="job-detail col-sm-12 col-md-12 col-lg-12">
         <div class="container">
-
             <div class="row my-4">
                 <div class="col-sm-12 col-lg-8">
                     <div class="job_detail_heading d-flex">
                         <div class="company_thumb"> 
                             <img class="img-fluid" src="{{job.company_avatar.url}}" alt="company_thumb">
-                            <small class="grad-bg-faded-danger text-white rounded text-center">Jobs comming soon</small> 
+                            <small class="rounded text-center">Jobs comming soon</small> 
                         </div>
                         <div class="job_description">
                             <ul class="job_meta">
                                 <li><i class="bi-geo-alt-fill text-success me-2"></i>{{object.location}}</li>
-                                <li><small  class="grad-bg-info text-white px-3 pt-2 pb-1 rounded">Full time</small></li>
+                                <li><small  class="grad-bg-info px-3 pt-2 pb-1 rounded">Full time</small></li>
                             </ul>
                             <ul class="job_meta">
                                 <li><i class="bi-file-text-fill text-success me-2"></i> Applications {{object.no_applications}}</li>
@@ -70,7 +69,7 @@
                 </div>
 
                 <div class="job_overview col-lg-4 col-sm-12 ">
-                    <h3 class="text-uppercase text-center text-white py-3 h5">job overview</h3>
+                    <h3 class="text-uppercase text-center py-3 h5">job overview</h3>
                     <ul>
                         <li><small><i class="bi-cash-stack fs-5 me-2 text-success"></i>Offerd Salary</small> <span>{{object.salary}}</span></li>
                         <li><small><i class="bi-person-fill me-2 fs-5 text-success"></i>Gender</small>   <span>{{object.get_gender_display}}</span></li>
@@ -84,31 +83,18 @@
 
     <section class="job-detail col-sm-12 col-md-12 col-lg-12">
         <div class="container">
-            <!-- for templates
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   Some form,t the my have suffered alteration in some form,andomised words</span>
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   believable.available, but the majority have sufferederation in some</span>
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   There are many variations of passages of Lorem Ipsum available, but</span>
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   Some form,t the my have suffered alteration in some form,andomised words</span>
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   believable.available, but the majority have sufferederation in some</span>
-            <span><i class="bi-check-circle-fill me-3 text-success"></i>   There are many variations of passages of Lorem Ipsum available, but</span>
-            -->
             <div class="row my-4">
-                
                 <div class="col-sm-12 col-lg-8">
-                    <div class="text-uppercase text-white py-3 h5"><span>job description</span></div>
                     {{object.description|safe}}
-                    <div class="text-uppercase text-white py-3 h5"><span>experience</span></div>
                     {{object.experience|safe}}
-                    <div class="text-uppercase text-white py-3 h5"><span>Requirements</span></div>
                     {{object.requirements|safe}}
                 </div>
-
                 <div class="col-sm-12 col-lg-4">
-                    <div class="card card-body">    <!--and request.user.is_employee -->
+                    <div class="card card-body">
                         {% if request.user.is_authenticated and request.user.is_employee %}
                             <div class="contact shadow p-4">
                                 {% if not applied %}
-                                    <h3 class="text-uppercase text-white py-3 h5 text-center">Apply this job</h3>
+                                    <h3 class="text-uppercase py-3 h5 text-center">Apply this job</h3>
                                     <form class="custom-form pb-4" method="post">
                                         {% csrf_token %}
                                         <div class="col-md-12 form-group">

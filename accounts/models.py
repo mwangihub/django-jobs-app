@@ -17,6 +17,7 @@ from django.contrib.auth.models import (
     UnicodeUsernameValidator,
     PermissionsMixin,
 )
+from django.contrib.sessions.models import Session
 from django.urls import reverse
 from django.db.models import Q, lookups
 from django.db import models
@@ -91,9 +92,7 @@ class User(AbstractBaseUser):
         blank=True,
         null=True,
     )
-    slug = models.SlugField(
-        default=uuid.uuid4, editable=False, null=True, blank=True, max_length=250
-    )
+    slug = models.SlugField(null=True, blank=True, max_length=250, unique=True)
     active = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
@@ -102,7 +101,6 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "second_name"]
     objects = UserManager()
-
 
     def get_short_name(self):
         return self.first_name
@@ -174,7 +172,7 @@ class EmployeeProfile(models.Model):
     user = models.OneToOneField(
         User, related_name="employee_profile", on_delete=models.CASCADE
     )
-    
+
     avatar = models.ImageField(
         upload_to="media/profiles/employees/avatars/", null=True, blank=True
     )
@@ -299,3 +297,21 @@ class InnovestSubcribers(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class AccentChoices(models.TextChoices):
+    GREEN = "g", "Green"
+    RED = "r", "Red"
+    BLUE = "b", "Blue"
+
+
+class Theme(models.Model):
+    ACCENT = AccentChoices.choices
+    session = models.CharField(
+        _("current sesion"), max_length=50, default="", blank=True, null=True)
+    light = models.BooleanField(default=True)
+    accent = models.CharField(
+        choices=AccentChoices.choices, max_length=1, default=AccentChoices.GREEN)
+
+    def __str__(self):
+        return self.session
