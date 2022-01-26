@@ -30,3 +30,16 @@ def staff_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
     if function:
         return actual_decorator(function)
     return actual_decorator
+
+def non_required(function=None, redirect_field_name='/', login_url='innovesthome:innovest-home'):
+    '''
+    Decorator for views that checks that the logged in user has no account type,
+    '''
+    actual_decorator = user_passes_test(
+        lambda u: u.is_non,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator

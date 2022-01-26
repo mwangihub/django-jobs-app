@@ -11,7 +11,7 @@ from django.views import View
 from . import forms
 from . import models as _db
 from jobs import models as j_db
-from core.decorators import staff_required
+from core.decorators import staff_required, non_required
 
 
 User = get_user_model()
@@ -62,7 +62,7 @@ class ApplicationsView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-                'applications': j_db.JobsApplication.objects.all(),
+            'applications': j_db.JobsApplication.objects.all(),
         }
         return render(request, self.template_name, context)
 
@@ -73,7 +73,7 @@ class ApplicantUsersView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-                'applicants': _db.User.objects.employee_user(),
+            'applicants': _db.User.objects.employee_user(),
         }
         return render(request, self.template_name, context)
 
@@ -85,7 +85,7 @@ class StaffUsersView(View):
     def get(self, request, *args, **kwargs):
         staff = _db.User.objects.staff_user().exclude(id=request.user.id)
         context = {
-                'staffs': staff,
+            'staffs': staff,
         }
         return render(request, self.template_name, context)
 
@@ -230,3 +230,45 @@ class HowToApplyView(View):
     def get(self, request, *args, **kwargs):
         context = {}
         return render(request, 'users/how_apply.html', context)
+
+
+@method_decorator([login_required(login_url="home"), non_required, ], name="dispatch",)
+class ChooseUserTypeView(generic.View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, "registration/choose_user_type.html", context)
+
+    def post(self, request, *args, **kwargs):
+        u_type = str(request.POST['type'])
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            user = None
+        if user is not None:
+            context = {
+                "selected": f"You have choosen {u_type} account",
+            }
+            if hasattr(user, u_type):
+                if u_type != 'staff' and u_type != 'none':
+                    setattr(user, u_type, True)
+                    user.non = False
+                    user.save()
+                    context["title"] = f"Welcome to {u_type} Account"
+                    return redirect("/")
+                else:
+                    if u_type == 'staff':
+                        return redirect("user_urls:staff_register")
+            if u_type == 'none':
+                none = "You have to select one of the existing accounts"
+                context["selected"] = none
+                return render(request, "registration/choose_user_type.html", context)
+        else:
+            context = {
+                "selected": f"Your account was not created!",
+            }
+            return render(request, "registration/choose_user_type.html", context)
+
+
+class StaffRegisterProcessView(generic.View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'registration/staff_reg_process.html')

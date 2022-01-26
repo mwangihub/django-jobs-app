@@ -26,6 +26,10 @@ class JobsPostsView(generic.ListView):
     model = jobs_db.Job
     template_name = "jobs/job_posts.html"
 
+    def get(self, request, *args, **kwargs):
+        # print(dir(request.user))
+        return super().get(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:

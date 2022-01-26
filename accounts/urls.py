@@ -13,6 +13,10 @@ urlpatterns = [
     # GENERAL URLS
     path("terms-and-conditions/",
          staff_views.TermsAndConditionsView.as_view(), name="terms-conditions",),
+    path("choose-user/",
+         staff_views.ChooseUserTypeView.as_view(), name="choose-user",),
+    path("staff-register/",
+         staff_views.StaffRegisterProcessView.as_view(), name="staff_register",),
     path("how-to-apply/", staff_views.HowToApplyView.as_view(), name="how-to"),
     path("privacy-policy/", staff_views.PrivacyPolicyView.as_view(),
          name="privacy-policy",),

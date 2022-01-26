@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, ReadOnlyPasswordHashWidget
 
 from ..models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -80,8 +80,8 @@ class UserAdminChangeForm(forms.ModelForm):
     the user, but replaces the password field with admin's
     password hash display field.
     """
-    password = ReadOnlyPasswordHashField()
-
+    # password = ReadOnlyPasswordHashField()
+    
     class Meta:
         model = User
         fields = '__all__'

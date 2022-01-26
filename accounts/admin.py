@@ -18,28 +18,27 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "email",
         "first_name",
-        'id',
-        #"colored_first_name",
         "second_name",
         "admin",
         "active",
         "staff",
         "buyer",
         "employee",
-        'slug'
+        "non",
+
     )
     list_filter = ("admin", "active", "staff")
     fieldsets = (
         ("Basic", {"fields": ("email", "password")}),
         ("Personal info", {"fields": ("first_name", "second_name", "slug")}),
-        ("Permissions",{"fields": ("admin","active","staff", )},),
-        ("Others",{"fields": ("buyer","employee",)},),
+        ("Permissions", {"fields": ("admin", "active", "staff", )},),
+        ("Authorization", {"fields": ("buyer", "employee", "non")},),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
-        (None, {"classes": ("wide",),"fields": ("email","password1","password2","first_name",\
-                    "second_name", "active","staff","admin","buyer","employee",),}, ),
+        (None, {"classes": ("wide",), "fields": ("email", "password1", "password2", "first_name",
+                                                 "second_name", "active", "staff", "admin", "buyer", "employee", "non"), }, ),
     )
     ordering = ("email",)
     filter_horizontal = ()

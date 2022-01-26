@@ -48,8 +48,7 @@ class EmployeeProfileView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.slug == kwargs['slug']:
-            self.profile = get_object_or_404(
-                acc_db.EmployeeProfile, user=request.user)
+            self.profile = get_object_or_404(acc_db.EmployeeProfile, user=request.user)
         return super(EmployeeProfileView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):

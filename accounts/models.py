@@ -58,6 +58,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("admin", True)
         extra_fields.setdefault("staff", True)
         extra_fields.setdefault("active", True)
+        extra_fields.setdefault("non", False)
         if extra_fields.get("admin") is not True:
             raise ValueError("Superuser must have admin=True.")
 
@@ -92,12 +93,13 @@ class User(AbstractBaseUser):
         blank=True,
         null=True,
     )
-    slug = models.SlugField(null=True, blank=True, max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True)
     active = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
     buyer = models.BooleanField(default=False)
     employee = models.BooleanField(default=False)
+    non = models.BooleanField(default=True) 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "second_name"]
     objects = UserManager()
@@ -109,6 +111,9 @@ class User(AbstractBaseUser):
         return self.email
 
     def email_user(self, subject, message, from_email=None, **kwargs):
+        '''
+        Takes parameters subject, message, from_email
+        '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def colored_first_name(self):
@@ -160,6 +165,9 @@ class User(AbstractBaseUser):
     def is_employee(self):
         return self.employee
 
+    @property
+    def is_non(self):
+        return self.non
 
 class GenderChoice(models.TextChoices):
     SELECT = "s", "Select"

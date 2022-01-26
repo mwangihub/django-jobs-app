@@ -13,9 +13,12 @@ urlpatterns = [
     path('', include('innovest.urls')),
     path('accounts/', include("accounts.urls")),
     path('jobs/', include('jobs.urls')),
-
+    
+    # Django-allauth
+    path('accounts/', include('allauth.urls')),
 
     # Application Programming Interface
+    path('rest-api/', include('rest_auth.urls')),
     path('innovest-api/', include('accounts.api.urls')),
 ]
 if settings.DEBUG:

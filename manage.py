@@ -3,10 +3,12 @@
 import os
 import sys
 import dotenv
-
+import pathlib
 
 def main():
-    dotenv.read_dotenv()
+    DOT_ENV_PATH = pathlib.Path() / '.env'
+    if DOT_ENV_PATH.exists():
+        dotenv.read_dotenv(str(DOT_ENV_PATH))
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
     try:
         from django.core.management import execute_from_command_line
